@@ -26,7 +26,7 @@ vision_digit_8 = Vision('needle_images/digit_8.png')
 vision_digit_9 = Vision('needle_images/digit_9.png')
 
 
-def digit_recognizer(haystack_img, threshold=0.95):
+def digit_recognizer(haystack_img, threshold=0.93):
     # recognize a sequence of digits
 
     # list of tuples(digit, x on screen where it appeard)

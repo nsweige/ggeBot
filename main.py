@@ -4,9 +4,11 @@ import os
 import pyautogui
 import random
 import keyboard
+from fortresses import updateSpreadsheet
 import storm_islands
 import gui
 import digit_recognizer
+import fortresses
 from time import time, sleep
 from windowcapture import WindowCapture
 from vision import Vision
@@ -18,13 +20,12 @@ def main():
     #waves, attacks = gui.menu()
     #print("waves: ", waves + '\nattacks:', attacks)
     #storm_islands.storm_islands_bot(int(waves), int(attacks))
-    sleep(5)
-    screenshot = wincap.get_screenshot()
-    digits = digit_recognizer.digit_recognizer(screenshot, 0.95)
-    print(digits)
-    cv.imshow('frame', screenshot)
-    cv.waitKey()
-    print('Done')
+    sleep(2)
+    updateSpreadsheet()
+
+    #cv.imshow('frame', screenshot)
+    #cv.waitKey()
+    #print('Done')
 
 if __name__ == "__main__":
     main()
