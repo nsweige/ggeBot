@@ -4,7 +4,7 @@ import os
 import pyautogui
 import random
 import keyboard
-from fortresses import updateSpreadsheet
+from fortresses import fortressesBot
 import storm_islands
 import gui
 import digit_recognizer
@@ -21,7 +21,7 @@ def main():
     #print("waves: ", waves + '\nattacks:', attacks)
     #storm_islands.storm_islands_bot(int(waves), int(attacks))
     sleep(2)
-    updateSpreadsheet()
+    fortressesBot()
 
     #cv.imshow('frame', screenshot)
     #cv.waitKey()

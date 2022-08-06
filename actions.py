@@ -175,3 +175,11 @@ def set_coord(x, y):
     sleep(random.uniform(very_small_delay, small_delay))
     pyautogui.click()
     sleep(random.uniform(very_small_delay, small_delay))
+
+def zoomOut():
+     # moves to screens center and zooms out fully
+    pyautogui.moveTo(900 + random.uniform(0, 19.8), 500 + random.uniform(0, 15.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+    sleep(random.uniform(very_small_delay, small_delay))
+    range_scroll = int(random.uniform(12, 15))
+    for i in range(range_scroll):
+        pyautogui.scroll(-1)

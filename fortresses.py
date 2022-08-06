@@ -7,9 +7,11 @@ import random
 import keyboard
 import digit_recognizer
 from time import time, sleep
+from spreadsheet import updateSpreadsheet
 from windowcapture import WindowCapture
 from vision import Vision
 from actions import attack, set_coord, zoomOut
+from datetime import date, time, datetime, timedelta
 
 # delays
 very_small_delay = 0.1
@@ -28,7 +30,8 @@ wincap = WindowCapture()
 # initialize the Vision classes
 vision_blocked_attack = Vision('needle_images/blocked_attack.png')
 
-def updateSpreadsheet(init_fortress_x = 243, init_fortress_y = 224, final_fortress_x = 1043, final_fortress_y = 1062):
+#def fortressesBot(init_fortress_x = 243, init_fortress_y = 224, final_fortress_x = 1043, final_fortress_y = 1062):
+def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x = 479, final_fortress_y = 243):
     # initial bot delay
     sleep(3)
     set_coord(init_fortress_x, init_fortress_y)
@@ -48,10 +51,15 @@ def updateSpreadsheet(init_fortress_x = 243, init_fortress_y = 224, final_fortre
                 exit()
 
         # moves to fortress center and clicks on it
+        sleep(random.uniform(very_small_delay, small_delay))
         pyautogui.moveTo(fortress_center_x - 5 + random.uniform(0, 9.8), fortress_center_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
         sleep(random.uniform(very_small_delay, small_delay))
         pyautogui.click()
         sleep(random.uniform(very_small_delay, small_delay))
+
+        hours = 0
+        minutes = 0
+        seconds = 0
 
         # search for blocked attack button
         screenshot = wincap.get_screenshot()
@@ -85,6 +93,10 @@ def updateSpreadsheet(init_fortress_x = 243, init_fortress_y = 224, final_fortre
                     seconds = str(time[4]) + str(time[5])
                     seconds = int(seconds)
                     print(seconds, "seconds")
+
+                #print("Livre em: ", (datetime.today() + timedelta(hours = hours, minutes = minutes, seconds = seconds)).strftime('%H:%M:%S'))
+                updateSpreadsheet(coord_x = x_coord, coord_y = y_coord, hours = hours, minutes = minutes, seconds = seconds)
+            
 
         # move thru entire map
         if(x_coord < final_fortress_x):
