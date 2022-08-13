@@ -30,8 +30,7 @@ wincap = WindowCapture()
 # initialize the Vision classes
 vision_blocked_attack = Vision('needle_images/blocked_attack.png')
 
-#def fortressesBot(init_fortress_x = 243, init_fortress_y = 224, final_fortress_x = 1043, final_fortress_y = 1062):
-def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x = 479, final_fortress_y = 243):
+def fortressesBot(init_fortress_x = 243, init_fortress_y = 224, final_fortress_x = 1043, final_fortress_y = 1062):
     # initial bot delay
     sleep(3)
     set_coord(init_fortress_x, init_fortress_y)
@@ -79,17 +78,29 @@ def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x
             print(time)
 
             if(((len(time)) % 2) == 0):
+                if(len(time) >= 2):
+                    seconds = str(time[0]) + str(time[1])
+                    seconds = int(seconds)
+                    print(seconds, "seconds")
+
+                if(len(time) >= 4):
+                    minutes = str(time[0]) + str(time[1])
+                    minutes = int(minutes)
+                    print(minutes, "minutes")
+
+                    seconds = str(time[2]) + str(time[3])
+                    seconds = int(seconds)
+                    print(seconds, "seconds")
+
                 if(len(time) >= 6):
                     hours = str(time[0]) + str(time[1])
                     hours = int(hours)
                     print(hours, "hours")
 
-                if(len(time) >= 4):
                     minutes = str(time[2]) + str(time[3])
                     minutes = int(minutes)
                     print(minutes, "minutes")
 
-                if(len(time) >= 2):
                     seconds = str(time[4]) + str(time[5])
                     seconds = int(seconds)
                     print(seconds, "seconds")

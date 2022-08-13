@@ -73,6 +73,68 @@ vision_attack = Vision('needle_images/attack.png')
 vision_cmd = Vision('needle_images/cmd.png')
 
 
+def berimond_auto_attack(type='gold'):
+    # move mouse to target
+    sleep(random.uniform(very_small_delay, very_big_delay))
+    pyautogui.moveTo(960 + random.uniform(0, 9.8), 567 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+    sleep(random.uniform(very_small_delay, small_delay))
+    pyautogui.click()
+    sleep(random.uniform(very_small_delay, small_delay))
+
+    # search for attack button
+    screenshot = wincap.get_screenshot()
+    attack_button = vision_attack.find(screenshot, 0.95, 'points')
+    if len(attack_button):
+        pyautogui.moveTo(attack_button[0][0] - 5 + random.uniform(0, 9.8), attack_button[0][1] - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.click()
+        sleep(random.uniform(very_small_delay, small_delay))
+
+        # first confirmation
+        pyautogui.moveTo(confirm_attack1_x - 5 + random.uniform(0, 9.8), confirm_attack1_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.click()
+        sleep(random.uniform(very_small_delay, small_delay))
+
+        # apply preset to wave
+        pyautogui.moveTo(apply_preset_to_wave_x - 2 + random.uniform(0, 3.8), apply_preset_to_wave_y - 2 + random.uniform(0, 3.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.click()
+        sleep(random.uniform(very_small_delay, small_delay))
+
+        # complete other waves
+        pyautogui.moveTo(1284 - 2 + random.uniform(0, 3.8), 988 - 2 + random.uniform(0, 3.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.click()
+        sleep(random.uniform(very_small_delay, small_delay))
+
+        # second confirmation
+        pyautogui.moveTo(confirm_attack2_x - 10 + random.uniform(0, 19.8), confirm_attack2_y - 8 + random.uniform(0, 15.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.click()
+        sleep(random.uniform(very_small_delay, small_delay))
+
+        if(type == 'feather'):
+            # moves to feather travel option
+            pyautogui.moveTo(feather_travel_x - 5 + random.uniform(0, 9.8), feather_travel_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+            sleep(random.uniform(very_small_delay, small_delay))
+            pyautogui.click()
+            sleep(random.uniform(very_small_delay, small_delay))
+
+        if(type == 'gold'):
+            # moves to gold travel option
+            pyautogui.moveTo(gold_travel_x - 5 + random.uniform(0, 9.8), gold_travel_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+            sleep(random.uniform(very_small_delay, small_delay))
+            pyautogui.click()
+            sleep(random.uniform(very_small_delay, small_delay))
+
+        # third confirmation
+        pyautogui.moveTo(confirm_attack3_x - 8 + random.uniform(0, 15.8), confirm_attack3_y - 8 + random.uniform(0, 15.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.click()
+        sleep(random.uniform(very_small_delay, small_delay))
+
+
 def attack(cx, cy, waves = 3, type='feather'):
     # move mouse to target
     sleep(random.uniform(very_small_delay, very_big_delay))
@@ -102,7 +164,7 @@ def attack(cx, cy, waves = 3, type='feather'):
         pyautogui.click()
         sleep(random.uniform(very_small_delay, small_delay))
 
-        # search for attack button
+        # search for cmd
         screenshot = wincap.get_screenshot()
         found_cmd = vision_cmd.find(screenshot, 0.95, 'points')
         if len(found_cmd):
