@@ -176,7 +176,7 @@ def attack(cx, cy, waves = 3, type='feather'):
         for times in range(waves):
             # apply preset to wave
             pyautogui.moveTo(apply_preset_to_wave_x - 2 + random.uniform(0, 3.8), apply_preset_to_wave_y - 2 + random.uniform(0, 3.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
-            sleep(random.uniform(very_small_delay, small_delay))
+            sleep(random.uniform(0.1, 0.5))
             pyautogui.click()
             sleep(random.uniform(very_small_delay, small_delay))
 

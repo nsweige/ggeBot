@@ -14,7 +14,7 @@ from time import time, sleep
 from windowcapture import WindowCapture
 from vision import Vision
 
-# delays
+# 243ppp
 very_small_delay = 0.1
 small_delay = 0.25
 medium_delay = 0.5

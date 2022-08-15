@@ -30,18 +30,60 @@ wincap = WindowCapture()
 # initialize the Vision classes
 vision_blocked_attack = Vision('needle_images/blocked_attack.png')
 
-def fortressesBot(init_fortress_x = 243, init_fortress_y = 224, final_fortress_x = 1043, final_fortress_y = 1062):
+vision_blocked_desert_fortress = Vision('needle_images/blocked_desert_fortress.png')
+
+# test - fortresses position adjustments
+# search for blocked fortress on screen (if somewhy is not centered)
+# results
+"""
+centro 			    962 	575
+
+1 a menos em x		1014	575	+52
+2 a menos em x 		1065	575	+51
+3 a menos em x		1116	575	+51
+10 a menos em x		1474	575	+512
+
+1 a mais em x		911	575	-51
+2 a mais em x		860	575	-51
+3 a mais em x		809	575	-51
+10 a mais em x		450	575	-512
+
+
+1 a menos em y		962	626	+51
+2 a menos em y		962	678	+52
+3 a menos em y		962	729	+51
+8 a menos em y		962	985	+410 (+51,25)
+
+1 a mais em y		962	524	-51
+2 a mais em y		962	473	-51
+3 a mais em y		962	422	-51
+8 a mais em y		962	166	-409 (-51,125)
+"""
+#sleep(3)
+#screenshot = wincap.get_screenshot()
+#blocked_desert_fortress = vision_blocked_desert_fortress.find(screenshot, 0.95, 'points')
+#if len(blocked_desert_fortress):
+#    print(blocked_desert_fortress[0][0])
+#    print("\n")
+#    print(blocked_desert_fortress[0][1])
+#    exit()
+
+#def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x = 1043, final_fortress_y = 1062):
+def fortressesBot(init_fortress_x = 263, init_fortress_y = 341, final_fortress_x = 1043, final_fortress_y = 1062):
     # initial bot delay
     sleep(3)
     set_coord(init_fortress_x, init_fortress_y)
     x_coord = init_fortress_x
     y_coord = init_fortress_y
 
-    even_line = True
+    #even_line = True
+    even_line = False
+
 
     zoomOut()
 
-    while((x_coord <= final_fortress_x) and (y_coord <= final_fortress_y)):
+    while((x_coord <= final_fortress_x) or (y_coord <= final_fortress_y)):
+        sleep(random.uniform(small_delay, medium_delay))
         # pauses if p is pressed, and unpauses if p is pressed again
         if keyboard.is_pressed("p"):
             output = pyautogui.confirm('Program paused, press OK to continue or Cancel to exit.')
@@ -49,12 +91,43 @@ def fortressesBot(init_fortress_x = 243, init_fortress_y = 224, final_fortress_x
             if(output == 'Cancel'):
                 exit()
 
-        # moves to fortress center and clicks on it
-        sleep(random.uniform(very_small_delay, small_delay))
-        pyautogui.moveTo(fortress_center_x - 5 + random.uniform(0, 9.8), fortress_center_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
-        sleep(random.uniform(very_small_delay, small_delay))
-        pyautogui.click()
-        sleep(random.uniform(very_small_delay, small_delay))
+
+        # search for blocked fortress on screen
+        screenshot = wincap.get_screenshot()
+        blocked_desert_fortress = vision_blocked_desert_fortress.find(screenshot, 0.9, 'points')
+        if len(blocked_desert_fortress):
+            sleep(random.uniform(very_small_delay, small_delay))
+            pyautogui.moveTo(blocked_desert_fortress[0][0] - 5 + random.uniform(0, 9.8), blocked_desert_fortress[0][1] - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+            sleep(random.uniform(very_small_delay, small_delay))
+            pyautogui.click()
+            sleep(random.uniform(very_small_delay, small_delay))
+
+            # adjusts x and y coordinates by comparing fortress coordinates with (962,575) that is the centered value on 1080p
+            if(blocked_desert_fortress[0][0] != 962):
+                x_coord = x_coord + int((blocked_desert_fortress[0][0] - 962) / 51 ) # delta / 51 where 1 coord = 51 pixels on screen (1080p)
+            if(blocked_desert_fortress[0][1] != 575):
+                y_coord = y_coord + int((blocked_desert_fortress[0][1] - 575) / 51 )
+        else:
+            while((not (len(blocked_desert_fortress))) and (x_coord <= final_fortress_x)):
+                x_coord = x_coord + 19
+                set_coord(x_coord, y_coord)
+                sleep(random.uniform(small_delay, medium_delay))
+                screenshot = wincap.get_screenshot()
+                blocked_desert_fortress = vision_blocked_desert_fortress.find(screenshot, 0.9, 'points')
+                if len(blocked_desert_fortress):
+                    sleep(random.uniform(very_small_delay, small_delay))
+                    pyautogui.moveTo(blocked_desert_fortress[0][0] - 5 + random.uniform(0, 9.8), blocked_desert_fortress[0][1] - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+                    sleep(random.uniform(very_small_delay, small_delay))
+                    pyautogui.click()
+                    sleep(random.uniform(very_small_delay, small_delay))
+
+                    # adjusts x and y coordinates by comparing fortress coordinates with (962,575) that is the centered value on 1080p
+                    if(blocked_desert_fortress[0][0] != 962):
+                        x_coord = x_coord + int((blocked_desert_fortress[0][0] - 962) / 51 ) # delta / 51 where 1 coord = 51 pixels on screen (1080p)
+                    if(blocked_desert_fortress[0][1] != 575):
+                        y_coord = y_coord + int((blocked_desert_fortress[0][1] - 575) / 51 )
+
+
 
         hours = 0
         minutes = 0
@@ -109,7 +182,7 @@ def fortressesBot(init_fortress_x = 243, init_fortress_y = 224, final_fortress_x
                 updateSpreadsheet(coord_x = x_coord, coord_y = y_coord, hours = hours, minutes = minutes, seconds = seconds)
             
 
-        # move thru entire map
+        # move thru entire map   
         if(x_coord < final_fortress_x):
             x_coord = x_coord + 39
         else:
