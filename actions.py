@@ -19,7 +19,7 @@ from vision import Vision
 very_small_delay = 0.1
 small_delay = 0.25
 medium_delay = 0.5
-big_delay_= 0.75
+big_delay= 0.75
 very_big_delay = 1
 
 
@@ -213,34 +213,36 @@ def attack(cx, cy, waves = 3, type='feather'):
         sleep(random.uniform(very_small_delay, small_delay))
 
 
-def set_coord(x, y):
-    # moves to first coordinates box(x)
-    pyautogui.moveTo(coord_box1_x - 5 + random.uniform(0, 9.8), coord_box1_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
-    sleep(random.uniform(very_small_delay, small_delay))
-    pyautogui.doubleClick()
-    sleep(random.uniform(very_small_delay, small_delay))
-    # types new x coordinates
-    pyautogui.typewrite(str(x), interval=random.uniform(very_small_delay, small_delay))
-    sleep(random.uniform(very_small_delay, small_delay))
+def set_coord(x=0, y=0, only_x=False, only_y=False):
+    if(not only_y):
+        # moves to first coordinates box(x)
+        pyautogui.moveTo(coord_box1_x - 5 + random.uniform(0, 9.8), coord_box1_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.doubleClick()
+        sleep(random.uniform(very_small_delay, small_delay))
+        # types new x coordinates
+        pyautogui.typewrite(str(x), interval=random.uniform(very_small_delay, small_delay))
+        sleep(random.uniform(very_small_delay, small_delay))
 
-    # moves to second coordinates box(y)
-    pyautogui.moveTo(coord_box2_x - 5 + random.uniform(0, 9.8), coord_box2_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
-    sleep(random.uniform(very_small_delay, small_delay))
-    pyautogui.doubleClick()
-    sleep(random.uniform(very_small_delay, small_delay))
-    # types new y coordinates
-    pyautogui.typewrite(str(y), interval=random.uniform(very_small_delay, small_delay))
-    sleep(random.uniform(very_small_delay, small_delay))
+    if(not only_x):
+        # moves to second coordinates box(y)
+        pyautogui.moveTo(coord_box2_x - 5 + random.uniform(0, 9.8), coord_box2_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.doubleClick()
+        sleep(random.uniform(very_small_delay, small_delay))
+        # types new y coordinates
+        pyautogui.typewrite(str(y), interval=random.uniform(very_small_delay, small_delay))
+        sleep(random.uniform(very_small_delay, small_delay))
 
     # jump to new coordinates
     pyautogui.moveTo(jump_to_coord_x - 5 + random.uniform(0, 9.8), jump_to_coord_y - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
     sleep(random.uniform(very_small_delay, small_delay))
     pyautogui.click()
-    sleep(random.uniform(very_small_delay, small_delay))
+    sleep(random.uniform(medium_delay, big_delay))
 
 def zoomOut():
      # moves to screens center and zooms out fully
-    pyautogui.moveTo(900 + random.uniform(0, 19.8), 500 + random.uniform(0, 15.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+    pyautogui.moveTo(800 + random.uniform(0, 190.8), 400 + random.uniform(0, 150.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
     sleep(random.uniform(very_small_delay, small_delay))
     range_scroll = int(random.uniform(12, 15))
     for i in range(range_scroll):

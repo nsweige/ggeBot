@@ -68,16 +68,19 @@ centro 			    962 	575
 #    print(blocked_desert_fortress[0][1])
 #    exit()
 
-#def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x = 1043, final_fortress_y = 1062):
-def fortressesBot(init_fortress_x = 263, init_fortress_y = 341, final_fortress_x = 1043, final_fortress_y = 1062):
+def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x = 1043, final_fortress_y = 1062):
+#peak
+#def fortressesBot(init_fortress_x = 321, init_fortress_y = 302, final_fortress_x = 984, final_fortress_y = 1004):
     # initial bot delay
     sleep(3)
     set_coord(init_fortress_x, init_fortress_y)
     x_coord = init_fortress_x
     y_coord = init_fortress_y
 
-    #even_line = True
-    even_line = False
+    even_line = True
+    #even_line = False
+
+    updateY = False
 
 
     zoomOut()
@@ -107,10 +110,11 @@ def fortressesBot(init_fortress_x = 263, init_fortress_y = 341, final_fortress_x
                 x_coord = x_coord + int((blocked_desert_fortress[0][0] - 962) / 51 ) # delta / 51 where 1 coord = 51 pixels on screen (1080p)
             if(blocked_desert_fortress[0][1] != 575):
                 y_coord = y_coord + int((blocked_desert_fortress[0][1] - 575) / 51 )
+                updateY = True
         else:
             while((not (len(blocked_desert_fortress))) and (x_coord <= final_fortress_x)):
                 x_coord = x_coord + 19
-                set_coord(x_coord, y_coord)
+                set_coord(x=x_coord, only_x=True)
                 sleep(random.uniform(small_delay, medium_delay))
                 screenshot = wincap.get_screenshot()
                 blocked_desert_fortress = vision_blocked_desert_fortress.find(screenshot, 0.9, 'points')
@@ -126,6 +130,7 @@ def fortressesBot(init_fortress_x = 263, init_fortress_y = 341, final_fortress_x
                         x_coord = x_coord + int((blocked_desert_fortress[0][0] - 962) / 51 ) # delta / 51 where 1 coord = 51 pixels on screen (1080p)
                     if(blocked_desert_fortress[0][1] != 575):
                         y_coord = y_coord + int((blocked_desert_fortress[0][1] - 575) / 51 )
+                        updateY = True
 
 
 
@@ -185,11 +190,15 @@ def fortressesBot(init_fortress_x = 263, init_fortress_y = 341, final_fortress_x
         # move thru entire map   
         if(x_coord < final_fortress_x):
             x_coord = x_coord + 39
+            if(not updateY):
+                set_coord(x=x_coord, only_x=True)
+            else:
+                set_coord(x=x_coord, y=y_coord)
+                updateY = False
         else:
             x_coord = init_fortress_x
             y_coord = y_coord + 19
             if(even_line):
                 even_line = not even_line
                 x_coord = x_coord - 19
-
-        set_coord(x_coord, y_coord)
+            set_coord(x=x_coord, y=y_coord)

@@ -28,7 +28,7 @@ def main():
     #waves, attacks = gui.menu()
     #print("waves: ", waves + '\nattacks:', attacks)
     #storm_islands.storm_islands_bot(int(waves), int(attacks))
-    sleep(3)
+    sleep(1)
     i = 0
 
     while i < 0:
