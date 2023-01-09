@@ -1,5 +1,6 @@
 import cv2 as cv
 import numpy as np
+from time import time
 
 
 class Vision:
@@ -70,11 +71,10 @@ class Vision:
                 
                 #if debug_mode == 'rectangles':
                     # Determine the box position
-                    #top_left = (x, y)
-                    #bottom_right = (x + w, y + h)
+                #top_left = (x, y)
+                #bottom_right = (x + w, y + h)
                     # Draw the box
-                    #cv.rectangle(haystack_img, top_left, bottom_right, color=line_color, 
-                    #            lineType=line_type, thickness=2)
+                #cv.rectangle(haystack_img, top_left, bottom_right, color=line_color, lineType=line_type, thickness=2)
                 #if debug_mode == 'points' and threshold==0.49:
                      #Draw the center point
                         #cv.drawMarker(haystack_img, (center_x, center_y), 
@@ -83,9 +83,9 @@ class Vision:
 
 
         #if debug_mode and threshold==0.49:
-            #cv.imshow('Matches', haystack_img)
-            #cv.waitKey()
-            #cv.imwrite('result_click_point.jpg', haystack_img)
+        #cv.imshow('Matches', haystack_img)
+        #cv.waitKey()
+        #cv.imwrite('prints/print_{}.png'.format(time()), haystack_img)
         
 
         return points

@@ -14,11 +14,11 @@ from actions import attack, set_coord, zoomOut
 from datetime import date, time, datetime, timedelta
 
 # delays
-very_small_delay = 0.1
-small_delay = 0.25
-medium_delay = 0.5
-big_delay_= 0.75
-very_big_delay = 1
+very_small_delay = 0.01
+small_delay = 0.025
+medium_delay = 0.15
+big_delay_= 0.275
+very_big_delay = 0.5
 
 # static positions
 fortress_center_x = 970
@@ -31,6 +31,37 @@ wincap = WindowCapture()
 vision_blocked_attack = Vision('needle_images/blocked_attack.png')
 
 vision_blocked_desert_fortress = Vision('needle_images/blocked_desert_fortress.png')
+vision_blocked_peak_fortress = Vision('needle_images/blocked_peak_fortress.png')
+
+vision_prime_time = Vision('needle_images/prime_time.png')
+vision_basic_offer = Vision('needle_images/basic_offer.png')
+
+
+# when using tab to move between coordinates, random offers can appear on screen and moving using tab won't work anymore
+# to deal with it, this function closes the offer and forces the next movement to be manual(using mouse movement and not tab)
+def offer_finder(screenshot):
+    # search for possible offers
+    found_prime_time = vision_prime_time.find(screenshot, 0.95, 'points')
+    if len(found_prime_time):
+        # closes it
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.moveTo(1270 + random.uniform(0, 9.8), 590 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.click()
+        sleep(random.uniform(very_small_delay, small_delay))
+        return True
+
+    found_basic_offer = vision_basic_offer.find(screenshot, 0.95, 'points')
+    if len(found_basic_offer):
+        # closes it
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.moveTo(1232 + random.uniform(0, 9.8), 333 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+        sleep(random.uniform(very_small_delay, small_delay))
+        pyautogui.click()
+        sleep(random.uniform(very_small_delay, small_delay))
+        return True
+
+
 
 # test - fortresses position adjustments
 # search for blocked fortress on screen (if somewhy is not centered)
@@ -68,12 +99,73 @@ centro 			    962 	575
 #    print(blocked_desert_fortress[0][1])
 #    exit()
 
-def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x = 1043, final_fortress_y = 1062):
-#peak
-#def fortressesBot(init_fortress_x = 321, init_fortress_y = 302, final_fortress_x = 984, final_fortress_y = 1004):
+# given a reign, at each click it will take a screenshot and save the time that appears on screen half a second after the click
+# doesn't work yet, needs to recognize coordinates so it can work
+def semiManualFortressBot(reign = 'desert'):
     # initial bot delay
     sleep(3)
-    set_coord(init_fortress_x, init_fortress_y)
+    if():
+        screenshot = wincap.get_screenshot()
+        digits = digit_recognizer.digit_recognizer(screenshot, 0.93)
+        print(digits)
+        order_by_x = sorted(digits, key=lambda i: i[-1])
+        print(order_by_x)
+        time = []
+        for i in order_by_x:
+            time.append(i[0])
+        print(time)
+
+        if(((len(time)) % 2) == 0):
+            if(len(time) >= 2):
+                seconds = str(time[0]) + str(time[1])
+                seconds = int(seconds)
+                print(seconds, "seconds")
+
+            if(len(time) >= 4):
+                minutes = str(time[0]) + str(time[1])
+                minutes = int(minutes)
+                print(minutes, "minutes")
+
+                seconds = str(time[2]) + str(time[3])
+                seconds = int(seconds)
+                print(seconds, "seconds")
+
+            if(len(time) >= 6):
+                hours = str(time[0]) + str(time[1])
+                hours = int(hours)
+                print(hours, "hours")
+
+                minutes = str(time[2]) + str(time[3])
+                minutes = int(minutes)
+                print(minutes, "minutes")
+
+                seconds = str(time[4]) + str(time[5])
+                seconds = int(seconds)
+                print(seconds, "seconds")
+
+            #print("Livre em: ", (datetime.today() + timedelta(hours = hours, minutes = minutes, seconds = seconds)).strftime('%H:%M:%S'))
+
+            # PROBLEM 
+            """
+
+
+
+
+
+            updateSpreadsheet(coord_x = x_coord, coord_y = y_coord, hours = hours, minutes = minutes, seconds = seconds, reign = reign)
+
+
+
+
+
+            """
+
+def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x = 1043, final_fortress_y = 1062, reign = 'desert'):
+#peak
+#def fortressesBot(init_fortress_x = 321, init_fortress_y = 302, final_fortress_x = 984, final_fortress_y = 1004, reign = 'desert'):
+    # initial bot delay
+    sleep(3)
+    set_coord(init_fortress_x, init_fortress_y, First=True)
     x_coord = init_fortress_x
     y_coord = init_fortress_y
 
@@ -97,7 +189,14 @@ def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x
 
         # search for blocked fortress on screen
         screenshot = wincap.get_screenshot()
-        blocked_desert_fortress = vision_blocked_desert_fortress.find(screenshot, 0.9, 'points')
+
+        if(offer_finder(screenshot)):
+            set_coord(x_coord, y_coord, First=True)
+
+        if(reign == 'desert'):
+            blocked_desert_fortress = vision_blocked_desert_fortress.find(screenshot, 0.9, 'points')
+        if(reign == 'peak'):
+            blocked_desert_fortress = vision_blocked_peak_fortress.find(screenshot, 0.8, 'points')
         if len(blocked_desert_fortress):
             sleep(random.uniform(very_small_delay, small_delay))
             pyautogui.moveTo(blocked_desert_fortress[0][0] - 5 + random.uniform(0, 9.8), blocked_desert_fortress[0][1] - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
@@ -109,15 +208,20 @@ def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x
             if(blocked_desert_fortress[0][0] != 962):
                 x_coord = x_coord + int((blocked_desert_fortress[0][0] - 962) / 51 ) # delta / 51 where 1 coord = 51 pixels on screen (1080p)
             if(blocked_desert_fortress[0][1] != 575):
+                aux = y_coord
                 y_coord = y_coord + int((blocked_desert_fortress[0][1] - 575) / 51 )
-                updateY = True
+                if(abs(aux - y_coord) > 1):
+                    updateY = True
         else:
             while((not (len(blocked_desert_fortress))) and (x_coord <= final_fortress_x)):
                 x_coord = x_coord + 19
                 set_coord(x=x_coord, only_x=True)
                 sleep(random.uniform(small_delay, medium_delay))
                 screenshot = wincap.get_screenshot()
-                blocked_desert_fortress = vision_blocked_desert_fortress.find(screenshot, 0.9, 'points')
+                if(reign == 'desert'):
+                    blocked_desert_fortress = vision_blocked_desert_fortress.find(screenshot, 0.9, 'points')
+                if(reign == 'peak'):
+                    blocked_desert_fortress = vision_blocked_peak_fortress.find(screenshot, 0.8, 'points')
                 if len(blocked_desert_fortress):
                     sleep(random.uniform(very_small_delay, small_delay))
                     pyautogui.moveTo(blocked_desert_fortress[0][0] - 5 + random.uniform(0, 9.8), blocked_desert_fortress[0][1] - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
@@ -184,8 +288,12 @@ def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x
                     print(seconds, "seconds")
 
                 #print("Livre em: ", (datetime.today() + timedelta(hours = hours, minutes = minutes, seconds = seconds)).strftime('%H:%M:%S'))
-                updateSpreadsheet(coord_x = x_coord, coord_y = y_coord, hours = hours, minutes = minutes, seconds = seconds)
-            
+                updateSpreadsheet(coord_x = x_coord, coord_y = y_coord, hours = hours, minutes = minutes, seconds = seconds, reign = reign)
+
+        # redundancy = + fault tolerance    
+        screenshot = wincap.get_screenshot()
+        if(offer_finder(screenshot)):
+            set_coord(x_coord, y_coord, First=True)
 
         # move thru entire map   
         if(x_coord < final_fortress_x):

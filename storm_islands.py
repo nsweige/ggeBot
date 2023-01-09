@@ -6,6 +6,7 @@ import pyautogui
 import random
 import keyboard
 from time import time, sleep
+from spreadsheet import updateSpreadsheet
 from windowcapture import WindowCapture
 from vision import Vision
 from actions import attack, set_coord, zoomOut
@@ -13,24 +14,24 @@ from actions import attack, set_coord, zoomOut
 
 
 # get mouse positions
-#sleep(5)
+#sleep(3)
 #print(pyautogui.position())
 #exit()
 
 # delays
-very_small_delay = 0.1
-small_delay = 0.25
-medium_delay = 0.5
-big_delay_= 0.75
-very_big_delay = 1
+very_small_delay = 0.01
+small_delay = 0.025
+medium_delay = 0.15
+big_delay_= 0.275
+very_big_delay = 0.51
 
 
 # map limits
-init_x = 550
-init_y = 540
+init_x = 538
+init_y = 538
 
-final_x = 745
-final_y = 745
+map_final_x = 758
+map_final_y = 758
 
 
 # invariable positions at 1920x1080 with min zoom
@@ -129,18 +130,18 @@ def get_guards_amount(haystack_img, threshold=0.99):
     return 1
 
 
-def storm_islands_bot(waves, attacks):
+def storm_islands_bot(x_coord = init_x, y_coord = init_y, final_x = map_final_x, final_y = map_final_y, waves = 0, attacks = 0, type = 'attack'):
     attacks_done = 0
     loop_time = time()
     # initial bot delay
     sleep(3)
-    set_coord(init_x, init_y)
-    x_coord = init_x
-    y_coord = init_y
+    set_coord(x_coord, y_coord, First=True)
+    exit = False
+    updateY = False
 
     zoomOut()
 
-    while(attacks_done < attacks):
+    while((attacks_done < attacks or type == 'mark') and exit == False):
         # initial bot delay
         sleep(random.uniform(very_small_delay, medium_delay))
 
@@ -185,7 +186,7 @@ def storm_islands_bot(waves, attacks):
                     pyautogui.moveTo(spy_loc[0][0] - 5 + random.uniform(0, 9.8), spy_loc[0][1] - 5 + random.uniform(0, 9.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
                     sleep(random.uniform(very_small_delay, 0.3))
                     pyautogui.click()
-                    sleep(random.uniform(very_small_delay, small_delay))
+                    sleep(random.uniform(0.1, 0.3))
 
                     # get guards amount
                     screenshot = wincap.get_screenshot()
@@ -201,10 +202,13 @@ def storm_islands_bot(waves, attacks):
                     if((fort_lvl == 60 and guards == 60) or
                     (fort_lvl == 70 and guards == 65) or
                     (fort_lvl == 80 and guards == 75)):
-                        attack(cx, cy, waves, 'feather')
-                        attacks_done = attacks_done + 1
-                        if(attacks_done < attacks):
-                            exit()
+                        if(type == 'attack'):
+                            attack(cx, cy, waves, 'feather')
+                            attacks_done = attacks_done + 1
+                            if(attacks_done < attacks):
+                                exit()
+                        else:
+                            updateSpreadsheet(coord_x = x_coord + int((cx - 962) / 51 ), coord_y = y_coord + int((cy - 575) / 51 ), reign = 'islands', lvl = fort_lvl)
 
                 sleep(random.uniform(small_delay, very_big_delay))
         
@@ -212,10 +216,17 @@ def storm_islands_bot(waves, attacks):
         if(x_coord < final_x):
             x_coord = x_coord + 39
         else:
+            if(y_coord > final_y):
+                exit = True
             x_coord = init_x
             y_coord = y_coord + 16
+            updateY = True
 
-        set_coord(x_coord, y_coord)
+        if(updateY):
+            set_coord(x_coord, y_coord)
+            updateY = False
+        else:
+            set_coord(x_coord, y_coord, True)
 
         # debug the loop rate
         print('FPS {}'.format(1 / (time() - loop_time)))
