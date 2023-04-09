@@ -9,7 +9,7 @@ import storm_islands
 import gui
 import digit_recognizer
 import fortresses
-from actions import berimond_auto_attack, buy_glory_bonus_samurai
+from actions import berimond_auto_attack, buy_glory_bonus_samurai, set_coord
 from time import time, sleep
 from windowcapture import WindowCapture
 from vision import Vision
@@ -78,14 +78,14 @@ def main():
     kid_trunks_delay = 197
     if(is_beri):
         i = 0
-        while i < 999:
+        while i < 0:
             screenshot = wincap.get_screenshot()
             offer_finder(screenshot)
 
             berimond_auto_attack()
             sleep(random.uniform(medium_delay, big_delay))
             #berimond_auto_attack()
-            i = i+1
+            i = i + 1
 
             sleep(jzargo_delay)
             #sleep(kid_trunks_delay)
@@ -98,6 +98,24 @@ def main():
             sleep(random.uniform(very_small_delay, small_delay))
             pyautogui.click()
             sleep(random.uniform(very_small_delay, small_delay))
+
+        camps_x = [230, 231, 229, 230, 226]
+        camps_y = [674, 673, 673, 677, 674]
+        types=['feather', 'gold', 'none']
+
+        while i < 999:
+            for i in range(5):
+                for t in range(3):
+                    screenshot = wincap.get_screenshot()
+                    offer_finder(screenshot)
+
+                    set_coord(x=camps_x[i], y=camps_y[i], First=True)
+                    berimond_auto_attack(type=types[t])
+                    sleep(random.uniform(medium_delay, big_delay))
+
+            sleep(450)
+
+
 
 
 

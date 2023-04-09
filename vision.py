@@ -15,7 +15,9 @@ class Vision:
     def __init__(self, needle_img_path, method=cv.TM_CCOEFF_NORMED):
         # load the image we're trying to match
         # https://docs.opencv.org/4.2.0/d4/da8/group__imgcodecs.html
-        self.needle_img = cv.imread(needle_img_path, cv.IMREAD_UNCHANGED)
+        img = cv.imread(needle_img_path, cv.IMREAD_UNCHANGED)
+        self.needle_img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+
 
         # Save the dimensions of the needle image
         self.needle_w = self.needle_img.shape[1]
@@ -27,7 +29,8 @@ class Vision:
 
     def find(self, haystack_img, threshold, debug_mode=None):
         # run the OpenCV algorithm
-        result = cv.matchTemplate(haystack_img, self.needle_img, self.method)
+        img = cv.cvtColor(haystack_img, cv.COLOR_BGR2GRAY)
+        result = cv.matchTemplate(img, self.needle_img, self.method)
 
         # Get the all the positions from the match result that exceed our threshold
         locations = np.where(result >= threshold)

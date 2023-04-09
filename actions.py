@@ -125,11 +125,13 @@ def buy_glory_bonus_samurai(amount):
 
 def berimond_auto_attack(type='gold'):
     # move mouse to target
+    '''
     sleep(random.uniform(very_small_delay, very_big_delay))
     pyautogui.moveTo(950 + random.uniform(0, 9.8), 562 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
     sleep(random.uniform(very_small_delay, small_delay))
     pyautogui.click()
     sleep(random.uniform(very_small_delay, small_delay))
+    '''
 
     # search for attack button
     screenshot = wincap.get_screenshot()

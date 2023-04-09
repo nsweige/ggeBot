@@ -16,8 +16,9 @@ from datetime import date, time, datetime, timedelta
 # delays
 very_small_delay = 0.01
 small_delay = 0.025
+smedium_delay = 0.05
 medium_delay = 0.15
-big_delay_= 0.275
+big_delay= 0.275
 very_big_delay = 0.5
 
 # static positions
@@ -36,30 +37,95 @@ vision_blocked_peak_fortress = Vision('needle_images/blocked_peak_fortress.png')
 vision_prime_time = Vision('needle_images/prime_time.png')
 vision_basic_offer = Vision('needle_images/basic_offer.png')
 
+vision_missao_cumprida = Vision('needle_images/missao_cumprida.png')
+vision_recompensa_nobre = Vision('needle_images/recompensa_nobre.png')
+vision_recompensa_berimond = Vision('needle_images/recompensa_berimond.png')
+vision_recompensa_alianca = Vision('needle_images/recompensa_alianca.png')
+
 
 # when using tab to move between coordinates, random offers can appear on screen and moving using tab won't work anymore
 # to deal with it, this function closes the offer and forces the next movement to be manual(using mouse movement and not tab)
 def offer_finder(screenshot):
-    # search for possible offers
-    found_prime_time = vision_prime_time.find(screenshot, 0.95, 'points')
-    if len(found_prime_time):
-        # closes it
-        sleep(random.uniform(very_small_delay, small_delay))
-        pyautogui.moveTo(1270 + random.uniform(0, 9.8), 590 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
-        sleep(random.uniform(very_small_delay, small_delay))
-        pyautogui.click()
-        sleep(random.uniform(very_small_delay, small_delay))
-        return True
+    return_value = False
+    loop = True
 
-    found_basic_offer = vision_basic_offer.find(screenshot, 0.95, 'points')
-    if len(found_basic_offer):
-        # closes it
-        sleep(random.uniform(very_small_delay, small_delay))
-        pyautogui.moveTo(1232 + random.uniform(0, 9.8), 333 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
-        sleep(random.uniform(very_small_delay, small_delay))
-        pyautogui.click()
-        sleep(random.uniform(very_small_delay, small_delay))
-        return True
+    while loop == True:
+        loop = False
+        # search for possible offers
+        found_prime_time = vision_prime_time.find(screenshot, 0.95, 'points')
+        if len(found_prime_time):
+            # closes it
+            sleep(random.uniform(medium_delay, big_delay))
+            pyautogui.moveTo(1270 + random.uniform(0, 9.8), 590 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+            sleep(random.uniform(medium_delay, big_delay))
+            pyautogui.click()
+            sleep(random.uniform(big_delay, very_big_delay))
+            return_value = True
+            loop == True
+            screenshot = wincap.get_screenshot()
+            sleep(random.uniform(big_delay, very_big_delay))
+
+        else:
+            found_basic_offer = vision_basic_offer.find(screenshot, 0.95, 'points')
+            if len(found_basic_offer):
+                # closes it
+                sleep(random.uniform(medium_delay, big_delay))
+                pyautogui.moveTo(1232 + random.uniform(0, 9.8), 333 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+                sleep(random.uniform(very_small_delay, small_delay))
+                pyautogui.click()
+                sleep(random.uniform(big_delay, very_big_delay))
+                return_value = True
+                loop == True
+                screenshot = wincap.get_screenshot()
+                sleep(random.uniform(big_delay, very_big_delay))
+
+            else:
+                found_missao_cumprida = vision_missao_cumprida.find(screenshot, 0.95, 'points')
+                if len(found_missao_cumprida):
+                    # closes it
+                    sleep(random.uniform(medium_delay, big_delay))
+                    pyautogui.moveTo(1253 + random.uniform(0, 9.8), 415 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+                    sleep(random.uniform(very_small_delay, small_delay))
+                    pyautogui.click()
+                    sleep(random.uniform(big_delay, very_big_delay))
+                    return_value = True
+                    loop == True
+                    screenshot = wincap.get_screenshot()
+                    sleep(random.uniform(big_delay, very_big_delay))
+
+                else:
+                    found_recompensa_nobre = vision_recompensa_nobre.find(screenshot, 0.95, 'points')
+                    found_recompensa_alianca = vision_recompensa_alianca.find(screenshot, 0.95, 'points')
+                    if len(found_recompensa_nobre) or len(found_recompensa_alianca):
+                        # closes it
+                        sleep(random.uniform(medium_delay, big_delay))
+                        pyautogui.moveTo(1101 + random.uniform(0, 9.8), 416 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+                        sleep(random.uniform(medium_delay, big_delay))
+                        pyautogui.click()
+                        sleep(random.uniform(big_delay, very_big_delay))
+                        return_value = True
+                        loop == True
+                        screenshot = wincap.get_screenshot()
+                        sleep(random.uniform(big_delay, very_big_delay))
+
+                    else:
+                        found_recompensa_berimond = vision_recompensa_berimond.find(screenshot, 0.95, 'points')
+                        if len(found_recompensa_berimond):
+                            # closes it
+                            sleep(random.uniform(medium_delay, big_delay))
+                            pyautogui.moveTo(963 + random.uniform(0, 9.8), 716 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
+                            sleep(random.uniform(medium_delay, big_delay))
+                            pyautogui.click()
+                            sleep(random.uniform(big_delay, very_big_delay))
+                            return_value = True
+                            loop == True
+                            screenshot = wincap.get_screenshot()
+                            sleep(random.uniform(big_delay, very_big_delay))
+        
+
+    return return_value
+
+    
 
 
 
@@ -247,7 +313,7 @@ def fortressesBot(init_fortress_x = 243, init_fortress_y = 243, final_fortress_x
         blocked_attack_button = vision_blocked_attack.find(screenshot, 0.95, 'points')
         if len(blocked_attack_button):
             pyautogui.moveTo(blocked_attack_button[0][0] - 5 + random.uniform(0, 9.8), blocked_attack_button[0][1] - 3 + random.uniform(0, 5.6), random.uniform(small_delay, medium_delay), pyautogui.easeOutQuad)
-            sleep(random.uniform(very_small_delay, small_delay))
+            sleep(random.uniform(small_delay, smedium_delay))
 
             screenshot = wincap.get_screenshot()
             digits = digit_recognizer.digit_recognizer(screenshot, 0.93)
